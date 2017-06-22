@@ -29,11 +29,9 @@ class Game
 # Welcome message
   def welcome
     puts "Welcome to Hangman." 
-    puts
-    puts "You have 12 attempts to guess the secret word which is between five and 12 letters long."
-    puts
+    puts "You have 12 attempts to guess a secret word between five and 12 letters long."
     # temporarily display answer to ease testing
-    puts "For those of you in the audience, the secret word is: #{answer.join}"
+    puts "For those of you in the audience, the secret word is: #{answer.join.upcase}"
   end
 
 # Check guess is valid and correct
@@ -43,7 +41,7 @@ class Game
         incorrect_letters << guess_letter  
       elsif !("a".."z").include?(guess_letter)
         puts "Invalid entry. Please try again."
-        @selections_left += 1    
+        self.selections_left += 1    
       else  
         answer.each_with_index do |letter, index|
           if letter == guess_letter
@@ -51,7 +49,7 @@ class Game
           end
         end 
       end 
-    @selections_left -= 1  
+    self.selections_left -= 1  
   end 
 
 # Run until game is won or turns run out
@@ -63,11 +61,13 @@ class Game
       print "Correct guesses: "
       puts answer_board.join(" ").upcase
       puts "Incorrect guesses: #{incorrect_letters.join(" ").upcase}"
-      puts "You have #{selections_left} guesses left."
+      selections_left == 1? plural = "guess" : plural = "guesses"
+      puts "You have #{selections_left} #{plural} left."
       puts "__________________________________"
       puts "Well done. You correctly guessed: #{answer.join.upcase}" if answer_board == answer
     end
     puts "Bad luck. The answer was: #{answer.join.upcase}" if answer_board != answer
+    puts 
   end  
 
 # Play game 
