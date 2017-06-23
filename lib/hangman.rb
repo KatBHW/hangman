@@ -8,7 +8,7 @@ class Game
     @dictionary = []
     @selections_left = 12
   end   
-  
+
 # Create dictionary of words between 5 and 12 letters in length
   def create_dictionary
     all_words = word_list.collect { |word| word.strip.downcase } 
@@ -16,8 +16,8 @@ class Game
       if (word.length > 4) && (word.length < 13)
         dictionary << word
       end
-    end  
-  end
+    end 
+  end 
 
 # Generate answer, answer board and array for storing incorrect guesses
   def answers_and_guesses
@@ -37,11 +37,11 @@ class Game
 # Check guess is valid and correct
   def check_guess
     guess_letter = gets.chomp.to_s.downcase
-      if (("a".."z").include?(guess_letter)) && (!answer.include?(guess_letter))
-        incorrect_letters << guess_letter  
-      elsif !("a".."z").include?(guess_letter)
+      if !("a".."z").include?(guess_letter)
         puts "Invalid entry. Please try again."
-        self.selections_left += 1    
+        self.selections_left += 1 
+      elsif !answer.include?(guess_letter)
+        incorrect_letters << guess_letter  
       else  
         answer.each_with_index do |letter, index|
           if letter == guess_letter
