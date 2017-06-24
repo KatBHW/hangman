@@ -41,7 +41,7 @@ class Game
     guess_letter = gets.chomp.to_s.downcase
       if !("a".."z").include?(guess_letter)
         puts "Invalid entry. Please try again."
-        self.selections_left += 1 
+        @selections_left += 1 
       elsif !answer.include?(guess_letter)
         incorrect_letters << guess_letter  
       else  
@@ -51,7 +51,7 @@ class Game
           end
         end 
       end 
-    self.selections_left -= 1  
+    @selections_left -= 1  
   end 
 
 # Run until game is won or turns run out
@@ -61,7 +61,7 @@ class Game
       print "Your guess: "
       check_guess
       print "Correct guesses: "
-      puts answer_board.join(" ").upcase
+      puts answer_board.join(" ").upcase #need to put something in to check whether it exists
       puts "Incorrect guesses: #{incorrect_letters.join(" ").upcase}"
       puts "Well done. You correctly guessed: #{answer.join.upcase}" if answer_board == answer
         if (selections_left > 0) && (answer_board != answer)
@@ -77,7 +77,7 @@ class Game
         end    
       puts "__________________________________"
       selections_left == 1? plural = "guess" : plural = "guesses"
-      puts "You have #{selections_left} #{plural} left."
+      puts "You have #{selections_left} #{plural} left." if answer_board != answer
     end
     puts "Bad luck. The answer was: #{answer.join.upcase}" if answer_board != answer
     puts 
@@ -85,18 +85,18 @@ class Game
 
 # Save game 
   def save_game
-	saved_data = [@answer, @answer_board, @incorrect_guesses, @selection_left]
-	File.open('saved_game.yml', 'w') { |n| n.write(YAML.dump(saved_data)) }
+	saved_data = [@answer, @answer_board, @incorrect_letters, @selections_left]
+	File.open('saved_game.yml', 'w') { |vars| vars.write(YAML.dump(saved_data)) }
 	exit
   end
 
 # Load saved game  
   def load_saved_game
     input_data = YAML.load(File.read('saved_game.yml'))
-    @answer = saved_data[0]
-    @answer_board = saved_data[1]
-    @incorrect_guesses = saved_data[2]
-    @selections_left = saved_data[3]
+    @answer = input_data[0]
+    @answer_board = input_data[1]
+    @incorrect_letters = input_data[2]
+    @selections_left = input_data[3]
   end
 
 # Play game 
